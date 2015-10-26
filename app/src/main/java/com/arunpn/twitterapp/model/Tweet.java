@@ -6,7 +6,10 @@ import com.google.gson.annotations.SerializedName;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
+
+import static com.arunpn.twitterapp.utils.DateUtilities.getDateDifferenceForDisplay;
 
 /**
  * Created by a1nagar on 10/25/15.
@@ -54,20 +57,31 @@ public class Tweet {
         this.user = user;
     }
 
-    public String getRelativeTimeAgo() {
+    public String getRelativeTimeAgo()  {
         String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
         SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
         sf.setLenient(true);
-
-        String relativeDate = "";
+        Date date = null;
         try {
-            long dateMillis = sf.parse(createdAt).getTime();
-            relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,
-                    System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+            date = sf.parse(createdAt);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
+        String relativeDate = getDateDifferenceForDisplay(date);
         return relativeDate;
+
+//        String relativeDate = "";
+//        try {
+//            long dateMillis = sf.parse(createdAt).getTime();
+//            relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,
+//                    System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return relativeDate;
     }
+
+
+
 }

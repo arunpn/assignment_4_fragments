@@ -43,7 +43,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             convertView.setTag(holder);
         }
         Tweet tweet = getItem(position);
-        holder.createdDate.setText(tweet.getRelativeTimeAgo());
+        holder.createdDate.setText(tweet.getRelativeTimeAgo().toString());
         holder.tweetBody.setText(tweet.getBody());
         holder.userName.setText(tweet.getUser().getUserName());
         Picasso.with(mContext)
