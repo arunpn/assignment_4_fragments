@@ -12,7 +12,7 @@ import retrofit.client.OkClient;
  */
 public class TwitterService {
     public static final String BASE_URL = "https://api.twitter.com/1.1";
-    public static final String EMPTY_BODY = "{}";
+
     private TwitterApi mApi;
 
     public void init(String token, String tokenSecret) {
@@ -27,9 +27,6 @@ public class TwitterService {
         mApi = adapter.create(TwitterApi.class);
     }
 
-    public void postTweet(String tweet, Callback<PostTweetResponse> callback) {
-        mApi.postTweet(tweet, EMPTY_BODY, callback);
-    }
 
     public TwitterApi getApiService() { return  mApi; }
 }

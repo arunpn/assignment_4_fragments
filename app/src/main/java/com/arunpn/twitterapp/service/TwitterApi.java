@@ -19,7 +19,7 @@ public interface TwitterApi {
     void postTweet(@Query("status") String tweet, @Body String body, Callback<PostTweetResponse> callback);
 
     @GET("/statuses/home_timeline.json")
-    public void getHomeTimeLine(Callback<List<Tweet>> callback);
+    public void getHomeTimeLine(@Query("count") int count,@Query("page") int page,Callback<List<Tweet>> callback);
 
 //
 //    @GET("/statuses/user_timeline.json")

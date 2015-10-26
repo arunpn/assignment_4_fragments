@@ -1,16 +1,29 @@
 package com.arunpn.twitterapp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.arunpn.twitterapp.adapter.TweetsArrayAdapter;
+import com.arunpn.twitterapp.model.PostTweetResponse;
 import com.arunpn.twitterapp.model.Tweet;
 import com.arunpn.twitterapp.service.TwitterApi;
 import com.arunpn.twitterapp.service.TwitterService;
+import com.arunpn.twitterapp.utils.EndlessScrollListener;
 import com.arunpn.twitterapp.utils.PrefUtil;
 
 import java.util.ArrayList;
@@ -31,12 +44,22 @@ public class MainActivity extends AppCompatActivity {
     List<Tweet> tweetList;
     @Bind(R.id.listView)
     ListView listView;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.swipeRefresh)
+    SwipeRefreshLayout swipeRefreshLayout;
+    int page = 0;
+    final static int COUNT = 8;
+    public static final String EMPTY_BODY = "{}";
+    int pendingChars = 140;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        setupToolbar();
 
         if (!PrefUtil.isAuthenticated(getApplicationContext())) {
             Intent intent = new Intent(this, TwitterLoginActivity.class);
@@ -48,18 +71,55 @@ public class MainActivity extends AppCompatActivity {
         twitterService.init(PrefUtil.getTwitterToken(getApplicationContext()),
                 PrefUtil.getTwitterTokenSecret(getApplicationContext()));
         apiService = twitterService.getApiService();
+        swipeRefreshLayout.setOnRefreshListener(refreshListener);
         adapter = new TweetsArrayAdapter(this, new ArrayList<Tweet>());
         listView.setAdapter(adapter);
 
-        apiService.getHomeTimeLine(new Callback<List<Tweet>>() {
+        getHomeTimeLine(page);
+
+
+        listView.setOnScrollListener(endlessScrollListener);
+
+
+    }
+
+    private SwipeRefreshLayout.OnRefreshListener refreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+        @Override
+        public void onRefresh() {
+            getHomeTimeLine(page);
+        }
+    };
+
+
+    private void setupToolbar() {
+        setSupportActionBar(toolbar);
+        toolbar.setTitle("Twitter");
+
+    }
+
+    private void getHomeTimeLine(int page) {
+        apiService.getHomeTimeLine(COUNT,page,new Callback<List<Tweet>>() {
             @Override
             public void success(List<Tweet> tweets, Response response) {
                 tweetList = tweets;
                 adapter.addAll(tweets);
                 adapter.notifyDataSetChanged();
-//                for(Tweet tweet : tweets) {
-//                    Log.e("x",tweet.getUser().getUserName());
-//                }
+                swipeRefreshLayout.setRefreshing(false);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                swipeRefreshLayout.setRefreshing(false);
+
+            }
+        });
+    }
+
+    public void postTweet(String tweetBody) {
+        apiService.postTweet(tweetBody, EMPTY_BODY, new Callback<PostTweetResponse>() {
+            @Override
+            public void success(PostTweetResponse postTweetResponse, Response response) {
+                Log.e("x", String.valueOf(response.getStatus()));
             }
 
             @Override
@@ -67,9 +127,15 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
+
+    protected EndlessScrollListener endlessScrollListener = new EndlessScrollListener() {
+        @Override
+        public boolean onLoadMore(int page, int totalItemsCount) {
+            getHomeTimeLine(page);
+            return true;
+        }
+    };
 
 
     @Override
@@ -87,10 +153,58 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_compose) {
+            showComposeDialog();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showComposeDialog() {
+        LayoutInflater inflater = getLayoutInflater();
+        View convertView = inflater.inflate(R.layout.compose_layout, null);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Compose Tweet").setView(convertView);
+
+        final EditText tweetBody = (EditText) convertView.findViewById(R.id.composeTweet);
+        final TextView tweetCount = (TextView) convertView.findViewById(R.id.textCounter);
+
+
+        tweetBody.addTextChangedListener( new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                pendingChars = 140 - tweetBody.getText().length();
+                tweetCount.setText(Integer.toString(pendingChars));
+
+            }
+        });
+
+
+
+        alertDialog.setPositiveButton("TWEET", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Log.e("x","inside save");
+                postTweet(tweetBody.getText().toString());
+            }
+        }).setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        }).create();
+        alertDialog.show();
+
     }
 }

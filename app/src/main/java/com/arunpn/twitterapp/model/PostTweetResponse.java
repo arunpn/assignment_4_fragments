@@ -31,14 +31,5 @@ public class PostTweetResponse {
         return mSource;
     }
 
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("PostTweetResponse{");
-        sb.append("mId='").append(mId).append('\'');
-        sb.append(", mUser=").append(mUser);
-        sb.append(", mText='").append(mText).append('\'');
-        sb.append(", mSource='").append(mSource).append('\'');
-        sb.append('}');
-        return sb.toString();
-    }
+
 }
