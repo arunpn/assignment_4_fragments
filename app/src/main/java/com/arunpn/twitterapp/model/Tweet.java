@@ -1,6 +1,12 @@
 package com.arunpn.twitterapp.model;
 
+import android.text.format.DateUtils;
+
 import com.google.gson.annotations.SerializedName;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 /**
  * Created by a1nagar on 10/25/15.
@@ -13,6 +19,8 @@ public class Tweet {
     @SerializedName("created_at")
     String createdAt;
     TwitterUser user;
+
+
 
     public String getBody() {
         return body;
@@ -44,5 +52,22 @@ public class Tweet {
 
     public void setUser(TwitterUser user) {
         this.user = user;
+    }
+
+    public String getRelativeTimeAgo() {
+        String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
+        SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
+        sf.setLenient(true);
+
+        String relativeDate = "";
+        try {
+            long dateMillis = sf.parse(createdAt).getTime();
+            relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,
+                    System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return relativeDate;
     }
 }
