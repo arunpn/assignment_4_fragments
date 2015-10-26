@@ -97,11 +97,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void getHomeTimeLine(int page) {
+    private void getHomeTimeLine(final int page) {
         apiService.getHomeTimeLine(COUNT,page,new Callback<List<Tweet>>() {
             @Override
             public void success(List<Tweet> tweets, Response response) {
                 tweetList = tweets;
+                if(page == 0) {
+                    adapter.clear();
+                }
                 adapter.addAll(tweets);
                 adapter.notifyDataSetChanged();
                 swipeRefreshLayout.setRefreshing(false);
@@ -120,6 +123,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void success(PostTweetResponse postTweetResponse, Response response) {
                 Log.e("x", String.valueOf(response.getStatus()));
+                getHomeTimeLine(0);
+
             }
 
             @Override
