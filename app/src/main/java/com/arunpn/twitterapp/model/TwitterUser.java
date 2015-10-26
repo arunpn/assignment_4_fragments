@@ -6,32 +6,43 @@ import com.google.gson.annotations.SerializedName;
  * Created by a1nagar on 10/25/15.
  */
 public class TwitterUser {
-    @SerializedName("id_str")
-    private String mId;
+    private String id;
     @SerializedName("name")
-    private String mName;
+    private String userName;
     @SerializedName("screen_name")
-    private String mScreenName;
+    private String screenName;
+    @SerializedName("profile_image_url")
+    private String profileImageUrl;
 
     public String getId() {
-        return mId;
+        return id;
     }
 
-    public String getName() {
-        return mName;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getScreenName() {
-        return mScreenName;
+        return screenName;
     }
 
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("TwitterUser{");
-        sb.append("mId='").append(mId).append('\'');
-        sb.append(", mName='").append(mName).append('\'');
-        sb.append(", mScreenName='").append(mScreenName).append('\'');
-        sb.append('}');
-        return sb.toString();
+    public void setScreenName(String screenName) {
+        this.screenName = screenName;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
     }
 }

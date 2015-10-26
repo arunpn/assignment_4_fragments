@@ -30,4 +30,6 @@ public class TwitterService {
     public void postTweet(String tweet, Callback<PostTweetResponse> callback) {
         mApi.postTweet(tweet, EMPTY_BODY, callback);
     }
+
+    public TwitterApi getApiService() { return  mApi; }
 }

@@ -4,18 +4,60 @@ import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.arunpn.twitterapp.model.Tweet;
+import com.arunpn.twitterapp.service.TwitterApi;
+import com.arunpn.twitterapp.service.TwitterService;
+import com.arunpn.twitterapp.utils.PrefUtil;
+
+import java.util.List;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
 
 public class MainActivity extends AppCompatActivity {
+
+    TwitterApi apiService;
+    TwitterService twitterService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Intent intent = new Intent(this, TwitterLoginActivity.class);
-        startActivity(intent);
+
+        if (!PrefUtil.isAuthenticated(getApplicationContext())) {
+            Intent intent = new Intent(this, TwitterLoginActivity.class);
+            startActivity(intent);
+        };
+
+            twitterService = new TwitterService();
+            twitterService.init(PrefUtil.getTwitterToken(getApplicationContext()),
+                    PrefUtil.getTwitterTokenSecret(getApplicationContext()));
+            apiService = twitterService.getApiService();
+
+
+
+        apiService.getHomeTimeLine( new Callback<List<Tweet>>() {
+            @Override
+            public void success(List<Tweet> tweets, Response response) {
+
+                for(Tweet tweet : tweets) {
+                    Log.e("x",tweet.getUser().getUserName());
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+
+
     }
 
 
