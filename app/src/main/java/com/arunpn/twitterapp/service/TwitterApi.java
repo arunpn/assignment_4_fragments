@@ -9,6 +9,7 @@ import retrofit.Callback;
 import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.POST;
+import retrofit.http.Path;
 import retrofit.http.Query;
 
 /**
@@ -19,15 +20,12 @@ public interface TwitterApi {
     void postTweet(@Query("status") String tweet, @Body String body, Callback<PostTweetResponse> callback);
 
     @GET("/statuses/home_timeline.json")
-    public void getHomeTimeLine(@Query("count") int count,@Query("page") int page,Callback<List<Tweet>> callback);
+    public void getHomeTimeLine(@Query("count") int count, @Query("page") int page, Callback<List<Tweet>> callback);
 
-//
-//    @GET("/statuses/user_timeline.json")
-//    void getUserTimeline(
-//            @Query("screen_name") String screenName,
-//            @Query("count") int count,
-//            Callback<>
-//    );
+    @GET("/statuses/retweets/{tweetId}.json")
+    public void getReTweets(@Path("tweetId") String tweetId, Callback<List<Tweet>> callback);
 
+    @GET("/statuses/show/{tweetId}.json")
+    public void getTweet(@Path("tweetId") String tweetId, Callback<List<Tweet>> callback);
 
 }

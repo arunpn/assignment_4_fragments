@@ -2,10 +2,12 @@ package com.arunpn.twitterapp.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by a1nagar on 10/25/15.
  */
-public class TwitterUser {
+public class TwitterUser implements Serializable {
     private String id;
     @SerializedName("name")
     private String userName;

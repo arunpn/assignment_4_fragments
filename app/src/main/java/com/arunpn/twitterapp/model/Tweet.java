@@ -1,9 +1,8 @@
 package com.arunpn.twitterapp.model;
 
-import android.text.format.DateUtils;
-
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -14,16 +13,50 @@ import static com.arunpn.twitterapp.utils.DateUtilities.getDateDifferenceForDisp
 /**
  * Created by a1nagar on 10/25/15.
  */
-public class Tweet {
+public class Tweet implements Serializable {
 
     @SerializedName("text")
     String body;
+    String id_str;
     long uid;
     @SerializedName("created_at")
     String createdAt;
     TwitterUser user;
+    Entities entities;
+    int retweet_count;
+    int favorite_count;
 
+    public String getId_str() {
+        return id_str;
+    }
 
+    public void setId_str(String id_str) {
+        this.id_str = id_str;
+    }
+
+    public Entities getEntities() {
+        return entities;
+    }
+
+    public void setEntities(Entities entities) {
+        this.entities = entities;
+    }
+
+    public int getRetweet_count() {
+        return retweet_count;
+    }
+
+    public void setRetweet_count(int retweet_count) {
+        this.retweet_count = retweet_count;
+    }
+
+    public int getFavorite_count() {
+        return favorite_count;
+    }
+
+    public void setFavorite_count(int favorite_count) {
+        this.favorite_count = favorite_count;
+    }
 
     public String getBody() {
         return body;
@@ -57,7 +90,7 @@ public class Tweet {
         this.user = user;
     }
 
-    public String getRelativeTimeAgo()  {
+    public String getRelativeTimeAgo() {
         String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
         SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
         sf.setLenient(true);
@@ -81,7 +114,6 @@ public class Tweet {
 //
 //        return relativeDate;
     }
-
 
 
 }

@@ -45,7 +45,10 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         Tweet tweet = getItem(position);
         holder.createdDate.setText(tweet.getRelativeTimeAgo().toString());
         holder.tweetBody.setText(tweet.getBody());
+        holder.favCount.setText(Integer.toString(tweet.getFavorite_count()));
+        holder.replyCount.setText(Integer.toString(tweet.getRetweet_count()));
         holder.userName.setText(tweet.getUser().getUserName());
+        holder.screenName.setText("@" + tweet.getUser().getScreenName());
         Picasso.with(mContext)
                 .load(tweet.getUser().getProfileImageUrl())
                 .resize(75, 75).transform(new CircleTransform()).into(holder.userProfileImage);
@@ -59,10 +62,16 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         ImageView userProfileImage;
         @Bind(R.id.userName)
         TextView userName;
+        @Bind(R.id.screenName)
+        TextView screenName;
         @Bind(R.id.createdDate)
         TextView createdDate;
         @Bind(R.id.tweetBody)
         TextView tweetBody;
+        @Bind(R.id.favCount)
+        TextView favCount;
+        @Bind(R.id.replyCount)
+        TextView replyCount;
 
         public ViewHolder(View view) {
             ButterKnife.bind(this, view);

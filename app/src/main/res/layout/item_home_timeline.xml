@@ -1,38 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:descendantFocusability="blocksDescendants"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/userProfileImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_margin="10dp" />
+    android:id="@+id/userProfileImage"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentStart="true"
+    android:layout_margin="10dp" />
 
     <TextView
         android:id="@+id/userName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:textColor="#000000"
         android:layout_toRightOf="@id/userProfileImage"
-        android:text="arunpn" />
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:text="arunpn"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/screenName"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:textColor="#888888"
+        android:layout_toRightOf="@id/userName"
+        android:text="arunpn"
+        android:textStyle="normal" />
+
 
     <TextView
         android:id="@+id/createdDate"
+        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:text="22m" />
+        android:text="22m"
+        android:textColor="#888888"
+        android:textStyle="normal"/>
 
     <TextView
         android:id="@+id/tweetBody"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/userName"
+        android:autoLink="all"
         android:layout_toRightOf="@id/userProfileImage"
         android:text="this is the body of the tweet. " />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_below="@id/tweetBody"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@id/userProfileImage"
+        android:layout_marginBottom="10dp"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dp"
+            android:id="@+id/retweetImg"
+            android:src="@drawable/retweet"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/reply"
+            android:id="@+id/replyImg"
+            android:layout_toRightOf="@id/retweetImg"
+            android:layout_marginLeft="60dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/replyCount"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/replyImg"
+            android:text="20"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/favorite"
+            android:id="@+id/favouriteImg"
+            android:layout_toRightOf="@id/replyCount"
+            android:layout_marginLeft="60dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/favCount"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/favouriteImg"
+            android:text="20"/>
+
+
+    </RelativeLayout>
 
 
 </RelativeLayout>

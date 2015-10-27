@@ -1,9 +1,7 @@
 package com.arunpn.twitterapp.service;
 
-import com.arunpn.twitterapp.ConfigKeys;
-import com.arunpn.twitterapp.model.PostTweetResponse;
+import com.arunpn.twitterapp.utils.ConfigKeys;
 
-import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
 
@@ -28,5 +26,7 @@ public class TwitterService {
     }
 
 
-    public TwitterApi getApiService() { return  mApi; }
+    public TwitterApi getApiService() {
+        return mApi;
+    }
 }
