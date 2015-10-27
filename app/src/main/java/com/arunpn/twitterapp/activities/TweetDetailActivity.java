@@ -3,7 +3,6 @@ package com.arunpn.twitterapp.activities;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -51,8 +50,11 @@ public class TweetDetailActivity extends AppCompatActivity {
         screenName.setText(tweet.getUser().getScreenName());
         tweetBody.setText(tweet.getBody());
         tweetPage.setWebViewClient(new MyWebViewClient());
-        if(tweet.getEntities().getUrls()!= null) {
+        if(tweet.getEntities().getUrls().size() > 0 ) {
             tweetPage.loadUrl(tweet.getEntities().getUrls().get(0).getUrl());
+        }
+        else {
+            tweetPage.setVisibility(View.GONE);
         }
         tweetPage.requestFocus();
         createdDate.setText(tweet.getCreatedAt());
