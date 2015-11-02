@@ -3,7 +3,9 @@ package com.arunpn.twitterapp.activities;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,21 +16,20 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.arunpn.twitterapp.R;
+import com.arunpn.twitterapp.adapter.HomeFragmentPagerAdapter;
 import com.arunpn.twitterapp.adapter.TweetsArrayAdapter;
+import com.arunpn.twitterapp.fragments.MentionsFragment;
+import com.arunpn.twitterapp.fragments.TimeLineFragment;
 import com.arunpn.twitterapp.model.PostTweetResponse;
 import com.arunpn.twitterapp.model.Tweet;
 import com.arunpn.twitterapp.service.TwitterApi;
 import com.arunpn.twitterapp.service.TwitterService;
-import com.arunpn.twitterapp.utils.EndlessScrollListener;
 import com.arunpn.twitterapp.utils.PrefUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -43,13 +44,13 @@ public class MainActivity extends AppCompatActivity {
     TwitterApi apiService;
     TwitterService twitterService;
     TweetsArrayAdapter adapter;
+    HomeFragmentPagerAdapter homeFragmentPagerAdapter;
     List<Tweet> tweetList;
-    @Bind(R.id.listView)
-    ListView listView;
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
-    @Bind(R.id.swipeRefresh)
-    SwipeRefreshLayout swipeRefreshLayout;
+//    @Bind(R.id.listView) ListView listView;
+    @Bind(R.id.toolbar) Toolbar toolbar;
+//    @Bind(R.id.swipeRefresh) SwipeRefreshLayout swipeRefreshLayout;
+    @Bind(R.id.tabLayout) TabLayout tabLayout;
+    @Bind(R.id.viewPager) ViewPager viewPager;
     int page = 0;
     final static int COUNT = 8;
     public static final String EMPTY_BODY = "{}";
@@ -59,48 +60,37 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+//        setContentView(R.layout.activity_main);
+        setContentView(R.layout.tab_layout);
         ButterKnife.bind(this);
         setupToolbar();
+        setupTabs();
+        istwitterAuthenticated();
+        setupTwitterService();
+    }
 
+    private void setupTabs() {
+        homeFragmentPagerAdapter = new HomeFragmentPagerAdapter(getSupportFragmentManager(), this);
+        viewPager.setAdapter(homeFragmentPagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setOnTabSelectedListener(tabSelectedListener);
+    }
+
+    private void setupTwitterService() {
+        twitterService = new TwitterService();
+        twitterService.init(PrefUtil.getTwitterToken(getApplicationContext()),
+                PrefUtil.getTwitterTokenSecret(getApplicationContext()));
+        apiService = twitterService.getApiService();
+
+    }
+
+    private void istwitterAuthenticated() {
         if (!PrefUtil.isAuthenticated(getApplicationContext())) {
             Intent intent = new Intent(this, TwitterLoginActivity.class);
             startActivity(intent);
         }
         ;
-
-        twitterService = new TwitterService();
-        twitterService.init(PrefUtil.getTwitterToken(getApplicationContext()),
-                PrefUtil.getTwitterTokenSecret(getApplicationContext()));
-        apiService = twitterService.getApiService();
-        swipeRefreshLayout.setOnRefreshListener(refreshListener);
-
-        adapter = new TweetsArrayAdapter(this, new ArrayList<Tweet>());
-        listView.setAdapter(adapter);
-
-        getHomeTimeLine(page);
-
-
-        listView.setOnScrollListener(endlessScrollListener);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Tweet tweetDetail = (Tweet) adapter.getItem(i);
-                Intent intent = new Intent(getApplicationContext(), TweetDetailActivity.class);
-                intent.putExtra("tweet", tweetDetail);
-                startActivity(intent);
-            }
-        });
-
-
     }
-
-    private SwipeRefreshLayout.OnRefreshListener refreshListener = new SwipeRefreshLayout.OnRefreshListener() {
-        @Override
-        public void onRefresh() {
-            getHomeTimeLine(page);
-        }
-    };
 
 
     private void setupToolbar() {
@@ -112,50 +102,23 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void getHomeTimeLine(final int page) {
-        apiService.getHomeTimeLine(COUNT, page, new Callback<List<Tweet>>() {
-            @Override
-            public void success(List<Tweet> tweets, Response response) {
-                tweetList = tweets;
-                if (page == 0) {
-                    adapter.clear();
-                }
-                adapter.addAll(tweets);
-                adapter.notifyDataSetChanged();
-                swipeRefreshLayout.setRefreshing(false);
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                swipeRefreshLayout.setRefreshing(false);
-
-            }
-        });
-    }
-
-    public void postTweet(String tweetBody) {
-        apiService.postTweet(tweetBody, EMPTY_BODY, new Callback<PostTweetResponse>() {
-            @Override
-            public void success(PostTweetResponse postTweetResponse, Response response) {
-                Log.e("x", String.valueOf(response.getStatus()));
-                getHomeTimeLine(0);
-
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-
-            }
-        });
-    }
-
-    protected EndlessScrollListener endlessScrollListener = new EndlessScrollListener() {
+    TabLayout.OnTabSelectedListener  tabSelectedListener =   new TabLayout.OnTabSelectedListener() {
         @Override
-        public boolean onLoadMore(int page, int totalItemsCount) {
-            getHomeTimeLine(page);
-            return true;
+        public void onTabSelected(TabLayout.Tab tab) {
+            viewPager.setCurrentItem(tab.getPosition());
+        }
+
+        @Override
+        public void onTabUnselected(TabLayout.Tab tab) {
+            viewPager.setCurrentItem(tab.getPosition());
+        }
+
+        @Override
+        public void onTabReselected(TabLayout.Tab tab) {
+            viewPager.setCurrentItem(tab.getPosition());
         }
     };
+
 
 
     @Override
@@ -215,6 +178,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 postTweet(tweetBody.getText().toString());
+                
             }
         }).setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
             @Override
@@ -225,4 +189,37 @@ public class MainActivity extends AppCompatActivity {
         alertDialog.show();
 
     }
+
+    public void postTweet(String tweetBody) {
+        apiService.postTweet(tweetBody, EMPTY_BODY, new Callback<PostTweetResponse>() {
+            @Override
+            public void success(PostTweetResponse postTweetResponse, Response response) {
+                Log.e("x", String.valueOf(response.getStatus()));
+                callFragment();
+
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+    }
+
+    void callFragment() {
+       Fragment fragment = homeFragmentPagerAdapter.getRegisteredFragment(viewPager.getCurrentItem());
+
+        if ( fragment instanceof  TimeLineFragment ) {
+            TimeLineFragment timeLineFragment = (TimeLineFragment) fragment;
+            timeLineFragment.getHomeTimeLine(0);
+        }
+        else
+        {
+            MentionsFragment mentionsFragment = (MentionsFragment) fragment;
+            mentionsFragment.getMentionsTimeLine(0);
+        }
+
+
+    }
+
 }

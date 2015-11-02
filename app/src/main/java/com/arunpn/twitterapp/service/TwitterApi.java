@@ -22,6 +22,10 @@ public interface TwitterApi {
     @GET("/statuses/home_timeline.json")
     public void getHomeTimeLine(@Query("count") int count, @Query("page") int page, Callback<List<Tweet>> callback);
 
+    @GET("/statuses/mentions_timeline.json")
+    public void getMentionsTimeLine(@Query("count") int count, @Query("page") int page, Callback<List<Tweet>> callback);
+
+
     @GET("/statuses/retweets/{tweetId}.json")
     public void getReTweets(@Path("tweetId") String tweetId, Callback<List<Tweet>> callback);
 
