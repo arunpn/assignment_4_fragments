@@ -1,10 +1,8 @@
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.arunpn.twitterapp.activities.UserDetail">
-
 
 
     <android.support.v7.widget.Toolbar
@@ -19,14 +17,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbar"
-        android:layout_margin="10dp" />
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="3dp"
+
+        />
 
     <TextView
         android:id="@+id/userName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/userImage"
-        android:layout_margin="10dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="3dp"
+        android:textSize="16sp"
+        android:textStyle="bold"
+
         android:text="Sam Heughan" />
 
 
@@ -35,15 +44,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/userName"
-        android:layout_margin="10dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="3dp"
+
         android:text="SamHeughan" />
 
     <TextView
         android:id="@+id/description"
         android:layout_width="wrap_content"
-        android:layout_margin="10dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/screenName"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="3dp"
+        android:textColor="#383838"
+
         android:text="description" />
 
     <TextView
@@ -51,7 +69,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/description"
-        android:layout_margin="10dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="1dp"
+        android:layout_marginTop="3dp"
+        android:textSize="14sp"
+        android:textStyle="bold"
         android:text="1001" />
 
 
@@ -60,7 +83,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/description"
-        android:layout_margin="10dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="3dp"
+
         android:layout_toRightOf="@id/friendsCount"
         android:text="FOLLOWING"
         android:textAllCaps="true" />
@@ -70,7 +97,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/description"
-        android:layout_margin="10dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginTop="3dp"
+        android:textSize="14sp"
+        android:textStyle="bold"
         android:layout_toRightOf="@id/FriendLabel"
         android:text="1001" />
 
@@ -79,7 +111,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/description"
-        android:layout_margin="10dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="3dp"
+
         android:layout_toRightOf="@id/followerCount"
         android:text="FOLLOWERS"
         android:textAllCaps="true" />

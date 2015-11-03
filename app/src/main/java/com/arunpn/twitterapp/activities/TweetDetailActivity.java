@@ -71,7 +71,7 @@ public class TweetDetailActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Tweet Detail");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        toolbar.setNavigationIcon(R.drawable.ic_twitter_icon);
+        toolbar.setNavigationIcon(R.drawable.ic_twitter_icon_new);
         toolbar.setBackgroundColor(getResources().getColor(R.color.style_color_primary));
         toolbar.setTitleTextColor(getResources().getColor(R.color.text_color_header));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {

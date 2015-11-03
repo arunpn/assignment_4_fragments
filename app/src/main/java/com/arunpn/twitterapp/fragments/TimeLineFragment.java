@@ -61,7 +61,7 @@ public class TimeLineFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         swipeRefreshLayout.setOnRefreshListener(refreshListener);
-        adapter = new TweetsArrayAdapter(getActivity(), new ArrayList<Tweet>());
+        adapter = new TweetsArrayAdapter(getActivity(),getFragmentManager(), new ArrayList<Tweet>());
         listView.setAdapter(adapter);
         getHomeTimeLine(page);
 

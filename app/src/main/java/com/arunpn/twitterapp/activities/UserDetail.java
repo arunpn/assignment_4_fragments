@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.arunpn.twitterapp.R;
 import com.arunpn.twitterapp.adapter.TweetsArrayAdapter;
+import com.arunpn.twitterapp.fragments.FollowersDialog;
+import com.arunpn.twitterapp.fragments.ReplyDialog;
 import com.arunpn.twitterapp.model.Tweet;
 import com.arunpn.twitterapp.model.TwitterUser;
 import com.arunpn.twitterapp.service.TwitterApi;
@@ -63,7 +65,7 @@ public class UserDetail extends AppCompatActivity {
         twitterService.init(PrefUtil.getTwitterToken(getApplicationContext()),
                 PrefUtil.getTwitterTokenSecret(getApplicationContext()));
         apiService = twitterService.getApiService();
-        adapter = new TweetsArrayAdapter(this, new ArrayList<Tweet>());
+        adapter = new TweetsArrayAdapter(this,getSupportFragmentManager(), new ArrayList<Tweet>());
         listView.setAdapter(adapter);
         setupToolBar();
 
@@ -79,6 +81,14 @@ public class UserDetail extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), TweetDetailActivity.class);
                 intent.putExtra("tweet", tweetDetail);
                 startActivity(intent);
+            }
+        });
+
+        friendsCount.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new FollowersDialog.Builder().build(userName).show(getSupportFragmentManager(),"REPLY");
+
             }
         });
     }
@@ -131,7 +141,7 @@ public class UserDetail extends AppCompatActivity {
         getSupportActionBar().setTitle("User Details");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        toolbar.setNavigationIcon(R.drawable.ic_twitter_icon);
+        toolbar.setNavigationIcon(R.drawable.ic_twitter_icon_new);
         toolbar.setBackgroundColor(getResources().getColor(R.color.style_color_primary));
         toolbar.setTitleTextColor(getResources().getColor(R.color.text_color_header));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -145,7 +155,7 @@ public class UserDetail extends AppCompatActivity {
     private void populateData() {
         friendsCount.setText(userData.getFriendsCount().toString());
         followerCount.setText(userData.getFollowersCount().toString());
-        screenName.setText(userData.getScreenName());
+        screenName.setText("@"+userData.getScreenName());
         userTwitterName.setText(userData.getUserName());
         description.setText(userData.getDescription());
         Picasso.with(this)

@@ -23,6 +23,7 @@ import com.arunpn.twitterapp.R;
 import com.arunpn.twitterapp.adapter.HomeFragmentPagerAdapter;
 import com.arunpn.twitterapp.adapter.TweetsArrayAdapter;
 import com.arunpn.twitterapp.fragments.MentionsFragment;
+import com.arunpn.twitterapp.fragments.ReplyDialog;
 import com.arunpn.twitterapp.fragments.TimeLineFragment;
 import com.arunpn.twitterapp.model.PostTweetResponse;
 import com.arunpn.twitterapp.model.Tweet;
@@ -39,16 +40,17 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ReplyDialog.ReplyDialogListener {
 
     TwitterApi apiService;
     TwitterService twitterService;
-    TweetsArrayAdapter adapter;
     HomeFragmentPagerAdapter homeFragmentPagerAdapter;
-    List<Tweet> tweetList;
-    @Bind(R.id.toolbar) Toolbar toolbar;
-    @Bind(R.id.tabLayout) TabLayout tabLayout;
-    @Bind(R.id.viewPager) ViewPager viewPager;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.tabLayout)
+    TabLayout tabLayout;
+    @Bind(R.id.viewPager)
+    ViewPager viewPager;
     public static final String EMPTY_BODY = "{}";
     int pendingChars = 140;
 
@@ -90,14 +92,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupToolbar() {
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Home");
-        toolbar.setNavigationIcon(R.drawable.ic_twitter_icon);
+        getSupportActionBar().setTitle("Twitter");
+        toolbar.setNavigationIcon(R.drawable.ic_twitter_icon_new);
         toolbar.setBackgroundColor(getResources().getColor(R.color.style_color_primary));
         toolbar.setTitleTextColor(getResources().getColor(R.color.text_color_header));
 
     }
 
-    TabLayout.OnTabSelectedListener  tabSelectedListener =   new TabLayout.OnTabSelectedListener() {
+    TabLayout.OnTabSelectedListener tabSelectedListener = new TabLayout.OnTabSelectedListener() {
         @Override
         public void onTabSelected(TabLayout.Tab tab) {
             viewPager.setCurrentItem(tab.getPosition());
@@ -113,7 +115,6 @@ public class MainActivity extends AppCompatActivity {
             viewPager.setCurrentItem(tab.getPosition());
         }
     };
-
 
 
     @Override
@@ -169,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 postTweet(tweetBody.getText().toString());
-                
+
             }
         }).setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
             @Override
@@ -197,15 +198,14 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    void callFragment() {
-       Fragment fragment = homeFragmentPagerAdapter.getRegisteredFragment(viewPager.getCurrentItem());
 
-        if ( fragment instanceof  TimeLineFragment ) {
+    void callFragment() {
+        Fragment fragment = homeFragmentPagerAdapter.getRegisteredFragment(viewPager.getCurrentItem());
+
+        if (fragment instanceof TimeLineFragment) {
             TimeLineFragment timeLineFragment = (TimeLineFragment) fragment;
             timeLineFragment.getHomeTimeLine(0);
-        }
-        else
-        {
+        } else {
             MentionsFragment mentionsFragment = (MentionsFragment) fragment;
             mentionsFragment.getMentionsTimeLine(0);
         }
@@ -213,4 +213,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onSubmitTweet(String tweet) {
+
+        postTweet(tweet);
+        callFragment();
+
+    }
 }

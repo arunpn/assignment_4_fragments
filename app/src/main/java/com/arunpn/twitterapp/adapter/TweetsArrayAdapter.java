@@ -2,6 +2,7 @@ package com.arunpn.twitterapp.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +12,8 @@ import android.widget.TextView;
 
 import com.arunpn.twitterapp.R;
 import com.arunpn.twitterapp.activities.UserDetail;
+import com.arunpn.twitterapp.fragments.ReplyDialog;
 import com.arunpn.twitterapp.model.Tweet;
-import com.arunpn.twitterapp.model.TwitterUser;
 import com.arunpn.twitterapp.utils.CircleTransform;
 import com.squareup.picasso.Picasso;
 
@@ -26,11 +27,13 @@ import butterknife.ButterKnife;
  */
 public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
     Context mContext;
+    FragmentManager fragmentManager;
 
-    public TweetsArrayAdapter(Context context, List<Tweet> objects) {
+    public TweetsArrayAdapter(Context context,FragmentManager fragmentManager, List<Tweet> objects) {
 //        super(context, android.R.layout.simple_list_item_1, objects);
         super(context, 0, objects);
         this.mContext = context;
+        this.fragmentManager = fragmentManager;
     }
 
 
@@ -47,7 +50,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
 
 
         }
-        Tweet tweet = getItem(position);
+        final Tweet tweet = getItem(position);
         holder.createdDate.setText(tweet.getRelativeTimeAgo().toString());
         holder.tweetBody.setText(tweet.getBody());
         holder.favCount.setText(Integer.toString(tweet.getFavorite_count()));
@@ -55,16 +58,23 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         holder.userName.setText(tweet.getUser().getUserName());
         holder.screenName.setText("@" + tweet.getUser().getScreenName());
         holder.userProfileImage.setTag(tweet.getUser().getScreenName());
+        holder.replyImg.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new ReplyDialog.Builder().build(tweet.getUser().getScreenName()).show(fragmentManager,"REPLY");
+            }
+        });
 
-        holder.userProfileImage.setOnClickListener( new View.OnClickListener() {
+        holder.userProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String userName = (String) view.getTag();
                 Intent intent = new Intent(mContext, UserDetail.class);
-                intent.putExtra("user_name",userName);
+                intent.putExtra("user_name", userName);
                 mContext.startActivity(intent);
             }
         });
+
         Picasso.with(mContext)
                 .load(tweet.getUser().getProfileImageUrl())
                 .resize(75, 75).transform(new CircleTransform()).into(holder.userProfileImage);
@@ -87,6 +97,9 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         TextView favCount;
         @Bind(R.id.replyCount)
         TextView replyCount;
+        @Bind(R.id.replyImg)
+        ImageView replyImg;
+
 
         public ViewHolder(View view) {
             ButterKnife.bind(this, view);

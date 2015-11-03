@@ -20,8 +20,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbar"
         android:layout_centerHorizontal="true"
-        android:background="#ffff9940"
+        android:background="#FFFFFF"
         app:tabMode="fixed"
+        app:tabTextColor="#55acee"
         app:tabGravity="fill"
         />
 
