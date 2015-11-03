@@ -18,4 +18,4 @@
 5. Bonus: User can view their direct messages (or send new ones)
 
 
-![Output sample](https://github.com/arunpn/assignment_4_tweetApp/blob/master/codepath_twitterApp.gif)
+![Output sample](https://github.com/arunpn/assignment_4_fragments/blob/master/codepath_twitterApp.gif)
