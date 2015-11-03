@@ -43,8 +43,6 @@ public class TimeLineFragment extends Fragment {
     SwipeRefreshLayout swipeRefreshLayout;
     int page = 0;
     final static int COUNT = 8;
-    public static final String EMPTY_BODY = "{}";
-    int pendingChars = 140;
 
     @Nullable
     @Override
@@ -77,7 +75,6 @@ public class TimeLineFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
     }
 
     private SwipeRefreshLayout.OnRefreshListener refreshListener = new SwipeRefreshLayout.OnRefreshListener() {
@@ -87,29 +84,8 @@ public class TimeLineFragment extends Fragment {
         }
     };
 
-    public void getMentionsTimeLine(final int page) {
-        apiService.getHomeTimeLine(COUNT, page, new Callback<List<Tweet>>() {
-            @Override
-            public void success(List<Tweet> tweets, Response response) {
-                tweetList = tweets;
-                if (page == 0) {
-                    adapter.clear();
-                }
-                adapter.addAll(tweets);
-                adapter.notifyDataSetChanged();
-                swipeRefreshLayout.setRefreshing(false);
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                swipeRefreshLayout.setRefreshing(false);
-
-            }
-        });
-
-    }
-
     public void getHomeTimeLine(final int page) {
+
         apiService.getHomeTimeLine(COUNT, page, new Callback<List<Tweet>>() {
             @Override
             public void success(List<Tweet> tweets, Response response) {
@@ -129,8 +105,6 @@ public class TimeLineFragment extends Fragment {
             }
         });
     }
-
-
 
     protected EndlessScrollListener endlessScrollListener = new EndlessScrollListener() {
         @Override

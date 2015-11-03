@@ -11,4 +11,5 @@
         <item>HOME</item>
         <item>MENTIONS</item>
     </string-array>
+    <string name="title_activity_user_detail">UserDetail</string>
 </resources>

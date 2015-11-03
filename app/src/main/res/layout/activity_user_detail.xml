@@ -1,0 +1,96 @@
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.arunpn.twitterapp.activities.UserDetail">
+
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentTop="true"
+        android:background="?attr/colorPrimaryDark" />
+
+    <ImageView
+        android:id="@+id/userImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:layout_margin="10dp" />
+
+    <TextView
+        android:id="@+id/userName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/userImage"
+        android:layout_margin="10dp"
+        android:text="Sam Heughan" />
+
+
+    <TextView
+        android:id="@+id/screenName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/userName"
+        android:layout_margin="10dp"
+        android:text="SamHeughan" />
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/screenName"
+        android:text="description" />
+
+    <TextView
+        android:id="@+id/friendsCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/description"
+        android:layout_margin="10dp"
+        android:text="1001" />
+
+
+    <TextView
+        android:id="@+id/FriendLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/description"
+        android:layout_margin="10dp"
+        android:layout_toRightOf="@id/friendsCount"
+        android:text="FOLLOWING"
+        android:textAllCaps="true" />
+
+    <TextView
+        android:id="@+id/followerCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/description"
+        android:layout_margin="10dp"
+        android:layout_toRightOf="@id/FriendLabel"
+        android:text="1001" />
+
+    <TextView
+        android:id="@+id/followerLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/description"
+        android:layout_margin="10dp"
+        android:layout_toRightOf="@id/followerCount"
+        android:text="FOLLOWERS"
+        android:textAllCaps="true" />
+
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/friendsCount"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp" />
+
+</RelativeLayout>

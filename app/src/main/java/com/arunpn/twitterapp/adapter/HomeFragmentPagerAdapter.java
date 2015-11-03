@@ -30,8 +30,6 @@ public class HomeFragmentPagerAdapter extends SmartFragmentStatePagerAdapter {
         switch (i) {
             case 0:
                 return new TimeLineFragment();
-
-//            return context.getFrag getSupportFragmentManager().beginTransaction().add(myFragment, "Some Tag").commit();
             case 1:
                 return new MentionsFragment();
             default:

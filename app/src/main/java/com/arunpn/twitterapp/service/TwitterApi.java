@@ -2,6 +2,7 @@ package com.arunpn.twitterapp.service;
 
 import com.arunpn.twitterapp.model.PostTweetResponse;
 import com.arunpn.twitterapp.model.Tweet;
+import com.arunpn.twitterapp.model.TwitterUser;
 
 import java.util.List;
 
@@ -22,9 +23,15 @@ public interface TwitterApi {
     @GET("/statuses/home_timeline.json")
     public void getHomeTimeLine(@Query("count") int count, @Query("page") int page, Callback<List<Tweet>> callback);
 
+    @GET("/statuses/user_timeline.json")
+    public void getUserTimeLine(@Query("count") int count, @Query("page") int page, @Query("screen_name") String screen_name,Callback<List<Tweet>> callback);
+
+
     @GET("/statuses/mentions_timeline.json")
     public void getMentionsTimeLine(@Query("count") int count, @Query("page") int page, Callback<List<Tweet>> callback);
 
+    @GET("/users/show.json")
+    public void getUser(@Query("screen_name") String screen_name, Callback<TwitterUser> callback);
 
     @GET("/statuses/retweets/{tweetId}.json")
     public void getReTweets(@Path("tweetId") String tweetId, Callback<List<Tweet>> callback);

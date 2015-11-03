@@ -46,13 +46,9 @@ public class MainActivity extends AppCompatActivity {
     TweetsArrayAdapter adapter;
     HomeFragmentPagerAdapter homeFragmentPagerAdapter;
     List<Tweet> tweetList;
-//    @Bind(R.id.listView) ListView listView;
     @Bind(R.id.toolbar) Toolbar toolbar;
-//    @Bind(R.id.swipeRefresh) SwipeRefreshLayout swipeRefreshLayout;
     @Bind(R.id.tabLayout) TabLayout tabLayout;
     @Bind(R.id.viewPager) ViewPager viewPager;
-    int page = 0;
-    final static int COUNT = 8;
     public static final String EMPTY_BODY = "{}";
     int pendingChars = 140;
 
@@ -60,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
         setContentView(R.layout.tab_layout);
         ButterKnife.bind(this);
         setupToolbar();
@@ -130,12 +125,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_compose) {
             showComposeDialog();
             return true;
